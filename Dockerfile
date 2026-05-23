@@ -3,8 +3,8 @@ FROM php:8.2-apache
 # Set default port jika variable PORT tidak disediakan oleh cloud provider
 ENV PORT=80
 
-# Install dependensi sistem yang dibutuhkan untuk ekstensi PHP dan Dompdf
-RUN apt-get update && apt-get install -y \
+# Install dependensi sistem yang dibutuhkan untuk ekstensi PHP dan Dompdf dengan --no-install-recommends
+RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     libpng-dev \
     libjpeg-dev \
@@ -14,6 +14,10 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     && rm -rf /var/lib/apt/lists/*
+
+# Pastikan hanya mpm_prefork yang aktif untuk menghindari error "More than one MPM loaded"
+RUN a2dismod mpm_event mpm_worker || true \
+    && a2enmod mpm_prefork || true
 
 # Install ekstensi PHP standar
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
