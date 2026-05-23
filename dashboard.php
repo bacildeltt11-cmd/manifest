@@ -310,9 +310,41 @@ foreach ($jadwal_manifest as $m) {
             .card {
                 padding: 15px !important;
             }
+
+            /* Rapikan riwayat di smartphone */
+            .left-panel {
+                gap: 12px !important;
+            }
+            .history-list {
+                max-height: 160px;
+                overflow-y: auto;
+                padding-right: 4px;
+            }
+            .history-item {
+                padding: 8px 10px;
+                margin-bottom: 6px;
+                font-size: 13px;
+                flex-wrap: wrap;
+            }
+            .history-item-details strong {
+                font-size: 13px;
+            }
+            .history-item-details span {
+                font-size: 11px;
+            }
+            .history-item a {
+                font-size: 11px;
+                margin-top: 4px;
+                width: 100%;
+                text-align: right;
+            }
+            .view-all-link {
+                font-size: 12px;
+                margin-top: 8px;
+            }
         }
 
-        /* Tablet: batasi grafik & kalender agar tidak terlalu dominan */
+        /* Tablet: batasi grafik & kalender + rapikan riwayat */
         @media (min-width: 769px) and (max-width: 1024px) {
             .chart-container {
                 height: 260px !important;
@@ -321,6 +353,13 @@ foreach ($jadwal_manifest as $m) {
             #calendar {
                 height: 450px !important;
                 max-height: 500px !important;
+            }
+            .history-list {
+                max-height: 220px;
+                overflow-y: auto;
+            }
+            .left-panel {
+                gap: 15px;
             }
         }
          .card { 
