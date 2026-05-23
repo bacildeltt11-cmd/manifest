@@ -410,6 +410,27 @@ body {
         grid-template-columns: 1fr !important;
         gap: 15px;
     }
+
+    /* Slide-in sidebar for tablets (and phones via more specific rules below) so it can be hidden and doesn't obstruct content */
+    .sidebar {
+        position: fixed !important;
+        left: 0 !important;
+        width: 250px !important;
+        height: 100vh !important;
+        z-index: 1000 !important;
+        box-shadow: 5px 0 25px rgba(0,0,0,0.15);
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .sidebar.collapsed {
+        left: -250px !important;
+        box-shadow: none !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
 }
 
 /* Mid-sized Screens (Up to 992px) */
@@ -437,6 +458,7 @@ body {
         height: 100vh !important;
         z-index: 1000 !important;
         box-shadow: 5px 0 25px rgba(0,0,0,0.15);
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
     
     .sidebar.collapsed {
