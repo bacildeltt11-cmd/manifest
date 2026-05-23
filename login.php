@@ -19,6 +19,37 @@ if(isset($_SESSION['login_rifqy'])){
     header("Location: dashboard.php");
     exit;
 }
+
+$error_msg = '';
+
+if(isset($_POST['login'])){
+    // Verify CSRF token
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        die("CSRF token validation failed");
+    }
+    
+    $username = sanitize_string($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    // Validate inputs
+    if (empty($username) || empty($password)) {
+        $error_msg = "Username dan Password harus diisi!";
+    } else {
+        // Sesuaikan dengan collection pengguna di MongoDB
+        $data = findOneDocument("pengguna", [
+            "username" => $username
+        ]);
+
+        if($data && password_verify($password, $data->password)){
+            session_regenerate_id(true);
+            $_SESSION['login_rifqy'] = $data->nama_pengguna;
+            header("Location: dashboard.php");
+            exit;
+        } else {
+            $error_msg = "Username atau Password Salah!";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -63,32 +94,8 @@ if(isset($_SESSION['login_rifqy'])){
     </div>
 
     <?php
-    if(isset($_POST['login'])){
-        // Verify CSRF token
-        if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
-            die("CSRF token validation failed");
-        }
-        
-        $username = sanitize_string($_POST['username'] ?? '');
-        $password = $_POST['password'] ?? '';
-
-        // Validate inputs
-        if (empty($username) || empty($password)) {
-            echo "<div class='alert'>Username dan Password harus diisi!</div>";
-        } else {
-            // Sesuaikan dengan collection pengguna di MongoDB
-            $data = findOneDocument("pengguna", [
-                "username" => $username
-            ]);
-
-            if($data && password_verify($password, $data->password)){
-                session_regenerate_id(true);
-                $_SESSION['login_rifqy'] = $data->nama_pengguna;
-                echo "<script>window.location='dashboard.php';</script>";
-            } else {
-                echo "<div class='alert'>Username atau Password Salah!</div>";
-            }
-        }
+    if(!empty($error_msg)){
+        echo "<div class='alert'>$error_msg</div>";
     }
     ?>
 
