@@ -15,9 +15,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Pastikan hanya mpm_prefork yang aktif untuk menghindari error "More than one MPM loaded"
-RUN a2dismod mpm_event mpm_worker || true \
-    && a2enmod mpm_prefork || true
+# Hapus paksa mpm lain dari mods-enabled dan pastikan hanya mpm_prefork yang aktif
+RUN rm -f /etc/apache2/mods-enabled/mpm_event.* \
+    && rm -f /etc/apache2/mods-enabled/mpm_worker.* \
+    && ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load \
+    && ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
 
 # Install ekstensi PHP standar
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
