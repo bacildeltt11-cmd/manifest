@@ -15,12 +15,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Hapus paksa mpm lain dari mods-enabled dan pastikan hanya mpm_prefork yang aktif
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.* \
-    && rm -f /etc/apache2/mods-enabled/mpm_worker.* \
-    && ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load \
-    && ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
-
 # Install ekstensi PHP standar
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd zip pdo pdo_mysql
@@ -53,5 +47,5 @@ RUN chown -R www-data:www-data /var/www/html
 # Expose port dinamis
 EXPOSE 80
 
-# Jalankan Apache
-CMD ["apache2-foreground"]
+# Jalankan skrip pembersihan MPM di runtime sebelum menyalakan Apache untuk menjamin tidak ada konflik
+CMD ["bash", "-c", "rm -f /etc/apache2/mods-enabled/mpm_event.* && rm -f /etc/apache2/mods-enabled/mpm_worker.* && apache2-foreground"]
