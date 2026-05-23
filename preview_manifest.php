@@ -29,9 +29,10 @@ $h = $h_obj ? (array)$h_obj : [];
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Cargo Manifest - Preview</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargo Manifest - Preview</title>
+    <link rel="stylesheet" href="style.css">
 <style>
 /* ===== HILANGKAN WATERMARK / HEADER / FOOTER BROWSER SAAT CETAK ===== */
 @page {

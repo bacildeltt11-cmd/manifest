@@ -8,6 +8,7 @@ unset($_SESSION['id_manifest']);
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selesai - CV. MANUNGGAL</title>
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #e6f0ff, #ffffff); height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; }

@@ -21,8 +21,9 @@ $h = $h_obj ? (array)$h_obj : [];
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Preview Manifest - CV. MANUNGGAL</title>
-<link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview Manifest - CV. MANUNGGAL</title>
+    <link rel="stylesheet" href="style.css">
 <style>
 body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg-color) !important; margin: 0; padding: 0; }
 .kertas { background: #fff; padding: 50px; max-width: 850px; margin: 0 auto 40px auto; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); border: 1px solid #ddd; }

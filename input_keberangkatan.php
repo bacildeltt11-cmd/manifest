@@ -139,6 +139,7 @@ $button_label = $edit_id ? "Simpan Perubahan" : ($is_boss ? "Simpan Jadwal" : "S
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cargo Manifest - Keberangkatan</title>
     <link rel="stylesheet" href="style.css">
     <style>

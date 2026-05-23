@@ -54,6 +54,7 @@ if (!empty($_GET['tgl_mulai']) && !empty($_GET['tgl_selesai'])) {
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riwayat Manifest - CV. MANUNGGAL</title>
     <link rel="stylesheet" href="style.css">
     <style>

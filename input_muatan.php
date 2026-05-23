@@ -200,6 +200,7 @@ $h = $h_obj ? (array)$h_obj : [];
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Input Muatan Lengkap - CV. MANUNGGAL</title>
     <link rel="stylesheet" href="style.css">
     <style>
@@ -280,7 +281,7 @@ $h = $h_obj ? (array)$h_obj : [];
 
                 <div class="master-box">
                     <strong>Daftarkan Barang Baru:</strong>
-                    <input id="inputBaru" placeholder="Ketik nama barang..." style="width: 250px;">
+                    <input id="inputBaru" placeholder="Ketik nama barang..." style="max-width: 300px; width: 100%;">
                     <button onclick="tambahKeMaster()" style="background: orange; color: white; border: none; cursor: pointer; padding: 0 15px; border-radius: 8px;">+ Masukkan History</button>
                 </div>
 
