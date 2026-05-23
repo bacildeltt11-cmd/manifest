@@ -153,7 +153,8 @@ foreach ($jadwal_manifest as $m) {
                 'tujuan' => $m_arr['tujuan'] ?? '',
                 'jenis' => $m_arr['jenis'] ?? '',
                 'nopol' => $m_arr['nopol'] ?? '',
-                'jam' => $m_arr['jam'] ?? ''
+                'jam' => $m_arr['jam'] ?? '',
+                'tanggal' => $m_arr['tanggal'] ?? ''
             ],
             'url' => $url
         ];
@@ -805,7 +806,8 @@ eventClick: function(info) {
                                     dateStr = y + '-' + m + '-' + d;
                                 }
                             }
-                            document.getElementById('edit_tanggal').value = dateStr;
+                            // Gunakan tanggal asli dari extendedProps agar akurat (hindari shift timezone dari FullCalendar)
+                            document.getElementById('edit_tanggal').value = ext.tanggal || dateStr;
                             document.getElementById('edit_jam').value = ext.jam || '';
                             document.getElementById('edit_tujuan').value = ext.tujuan || '';
 
