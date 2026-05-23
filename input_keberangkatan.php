@@ -116,6 +116,40 @@ if (isset($_POST['simpan'])) {
     }
 }
 
+// Handle tambah master dari modal (?modal=kapal/jenis/nopol)
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['add_kapal'])) {
+        $nama = sanitize_string($_POST['nama'] ?? '');
+        if ($nama) {
+            insertDocument("master_kapal", ["nama" => $nama]);
+            $_SESSION['success'] = 'Kapal baru berhasil ditambahkan';
+        }
+        $url = 'input_keberangkatan.php' . ($edit_id ? '?id=' . urlencode($edit_id) : '');
+        header("Location: $url");
+        exit;
+    }
+    if (isset($_POST['add_jenis'])) {
+        $kode = sanitize_string($_POST['kode'] ?? '');
+        if ($kode) {
+            insertDocument("master_jenis", ["kode" => $kode]);
+            $_SESSION['success'] = 'Jenis kendaraan baru berhasil ditambahkan';
+        }
+        $url = 'input_keberangkatan.php' . ($edit_id ? '?id=' . urlencode($edit_id) : '');
+        header("Location: $url");
+        exit;
+    }
+    if (isset($_POST['add_nopol'])) {
+        $nopol = sanitize_string($_POST['nopol'] ?? '');
+        if ($nopol) {
+            insertDocument("master_nopol", ["nopol" => $nopol]);
+            $_SESSION['success'] = 'Nomor polisi baru berhasil ditambahkan';
+        }
+        $url = 'input_keberangkatan.php' . ($edit_id ? '?id=' . urlencode($edit_id) : '');
+        header("Location: $url");
+        exit;
+    }
+}
+
 $master_kapal = findDocuments("master_kapal", []);
 $kapals = [];
 foreach($master_kapal as $k) $kapals[] = $k->nama;
@@ -347,9 +381,63 @@ document.addEventListener('keydown', function(e) {
         });
     }
 });
+
+// Auto open modal berdasarkan ?modal=kapal / jenis / nopol
+document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const m = params.get('modal');
+    if (m === 'kapal') {
+        document.getElementById('modal-kapal').style.display = 'flex';
+    } else if (m === 'jenis') {
+        document.getElementById('modal-jenis').style.display = 'flex';
+    } else if (m === 'nopol') {
+        document.getElementById('modal-nopol').style.display = 'flex';
+    }
+});
 </script>
-        </div>
+
+<!-- MODAL TAMBAH MASTER DATA -->
+<!-- Modal Kapal -->
+<div id="modal-kapal" class="modal-overlay" style="display:none;" onclick="if (event.target === this) this.style.display='none'">
+    <div class="modal" onclick="event.stopImmediatePropagation()">
+        <h4>Tambah Kapal Baru</h4>
+        <form method="POST" action="">
+            <input type="text" name="nama" class="form-control" placeholder="Contoh: KM. DHARMA FERRY IV" required>
+            <div style="margin-top:15px; display:flex; gap:10px;">
+                <button type="submit" name="add_kapal" class="btn btn-primary" style="flex:1;">Simpan Kapal</button>
+                <button type="button" onclick="document.getElementById('modal-kapal').style.display='none'" class="btn btn-secondary" style="flex:1;">Batal</button>
+            </div>
+        </form>
     </div>
 </div>
+
+<!-- Modal Jenis -->
+<div id="modal-jenis" class="modal-overlay" style="display:none;" onclick="if (event.target === this) this.style.display='none'">
+    <div class="modal" onclick="event.stopImmediatePropagation()">
+        <h4>Tambah Jenis Kendaraan Baru</h4>
+        <form method="POST" action="">
+            <input type="text" name="kode" class="form-control" placeholder="Contoh: TB / TS / LCT" required>
+            <div style="margin-top:15px; display:flex; gap:10px;">
+                <button type="submit" name="add_jenis" class="btn btn-primary" style="flex:1;">Simpan Jenis</button>
+                <button type="button" onclick="document.getElementById('modal-jenis').style.display='none'" class="btn btn-secondary" style="flex:1;">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Nopol -->
+<div id="modal-nopol" class="modal-overlay" style="display:none;" onclick="if (event.target === this) this.style.display='none'">
+    <div class="modal" onclick="event.stopImmediatePropagation()">
+        <h4>Tambah Nomor Polisi Baru</h4>
+        <form method="POST" action="">
+            <input type="text" name="nopol" class="form-control" placeholder="Contoh: H 1234 AB" required>
+            <div style="margin-top:15px; display:flex; gap:10px;">
+                <button type="submit" name="add_nopol" class="btn btn-primary" style="flex:1;">Simpan Nopol</button>
+                <button type="button" onclick="document.getElementById('modal-nopol').style.display='none'" class="btn btn-secondary" style="flex:1;">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 </body>
 </html>
