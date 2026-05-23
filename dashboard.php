@@ -567,7 +567,7 @@ foreach ($jadwal_manifest as $m) {
 
                  <div class="form-group">
                      <label>Tanggal</label>
-                     <input type="date" name="tanggal_display" id="add_tanggal_display" class="form-control" required readonly>
+                      <input type="text" name="tanggal_display" id="add_tanggal_display" class="form-control" readonly style="background:#f0f4f8; color:#333; font-weight:500;">
                  </div>
 
                  <div class="form-group">
@@ -625,8 +625,9 @@ foreach ($jadwal_manifest as $m) {
 
                  <div class="form-group">
                      <label>Tanggal Keberangkatan</label>
-                     <input type="date" name="tanggal" id="edit_tanggal" class="form-control" required>
-                 </div>
+                      <input type="date" name="tanggal" id="edit_tanggal" class="form-control" required>
+                      <input type="text" id="edit_tanggal_display" class="form-control" readonly style="margin-top:6px; background:#f0f4f8; color:#333; font-weight:500; font-size:14px;" placeholder="Tanggal akan ditampilkan di sini">
+                  </div>
 
                  <div class="form-group">
                      <label>Nama Kapal</label>
@@ -810,6 +811,16 @@ eventClick: function(info) {
                             document.getElementById('edit_tanggal').value = ext.tanggal || dateStr;
                             document.getElementById('edit_jam').value = ext.jam || '';
                             document.getElementById('edit_tujuan').value = ext.tujuan || '';
+
+                            // Tampilkan format Indonesia yang rapi (23 Mei 2026) di field display
+                            var disp = document.getElementById('edit_tanggal_display');
+                            if (disp) {
+                                var tglVal = ext.tanggal || dateStr;
+                                if (tglVal) {
+                                    var dt = new Date(tglVal + 'T00:00:00');
+                                    disp.value = dt.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
+                                }
+                            }
 
                             // Set dropdown - langsung set value
                             var kapalVal = String(ext.kapal || '');
