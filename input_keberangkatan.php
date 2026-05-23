@@ -396,46 +396,67 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- MODAL TAMBAH MASTER DATA -->
+<!-- MODAL TAMBAH MASTER DATA (Improved UI) -->
 <!-- Modal Kapal -->
 <div id="modal-kapal" class="modal-overlay" style="display:none;" onclick="if (event.target === this) this.style.display='none'">
     <div class="modal" onclick="event.stopImmediatePropagation()">
-        <h4>Tambah Kapal Baru</h4>
-        <form method="POST" action="">
-            <input type="text" name="nama" class="form-control" placeholder="Contoh: KM. DHARMA FERRY IV" required>
-            <div style="margin-top:15px; display:flex; gap:10px;">
-                <button type="submit" name="add_kapal" class="btn btn-primary" style="flex:1;">Simpan Kapal</button>
-                <button type="button" onclick="document.getElementById('modal-kapal').style.display='none'" class="btn btn-secondary" style="flex:1;">Batal</button>
-            </div>
-        </form>
+        <div class="modal-header">
+            <h4>🚢 Tambah Kapal Baru</h4>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="">
+                <div class="form-group">
+                    <label>Nama Kapal</label>
+                    <input type="text" name="nama" class="form-control" placeholder="Contoh: KM. DHARMA FERRY IV" required>
+                </div>
+                <div class="modal-footer" style="padding-top: 10px; margin-top: 10px;">
+                    <button type="submit" name="add_kapal" class="btn-modal-submit">Simpan Kapal</button>
+                    <a href="javascript:void(0)" onclick="document.getElementById('modal-kapal').style.display='none'" class="modal-close">Batal</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <!-- Modal Jenis -->
 <div id="modal-jenis" class="modal-overlay" style="display:none;" onclick="if (event.target === this) this.style.display='none'">
     <div class="modal" onclick="event.stopImmediatePropagation()">
-        <h4>Tambah Jenis Kendaraan Baru</h4>
-        <form method="POST" action="">
-            <input type="text" name="kode" class="form-control" placeholder="Contoh: TB / TS / LCT" required>
-            <div style="margin-top:15px; display:flex; gap:10px;">
-                <button type="submit" name="add_jenis" class="btn btn-primary" style="flex:1;">Simpan Jenis</button>
-                <button type="button" onclick="document.getElementById('modal-jenis').style.display='none'" class="btn btn-secondary" style="flex:1;">Batal</button>
-            </div>
-        </form>
+        <div class="modal-header">
+            <h4>🚚 Tambah Jenis Kendaraan Baru</h4>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="">
+                <div class="form-group">
+                    <label>Kode Jenis</label>
+                    <input type="text" name="kode" class="form-control" placeholder="Contoh: TB / TS / LCT" required>
+                </div>
+                <div class="modal-footer" style="padding-top: 10px; margin-top: 10px;">
+                    <button type="submit" name="add_jenis" class="btn-modal-submit">Simpan Jenis</button>
+                    <a href="javascript:void(0)" onclick="document.getElementById('modal-jenis').style.display='none'" class="modal-close">Batal</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <!-- Modal Nopol -->
 <div id="modal-nopol" class="modal-overlay" style="display:none;" onclick="if (event.target === this) this.style.display='none'">
     <div class="modal" onclick="event.stopImmediatePropagation()">
-        <h4>Tambah Nomor Polisi Baru</h4>
-        <form method="POST" action="">
-            <input type="text" name="nopol" class="form-control" placeholder="Contoh: H 1234 AB" required>
-            <div style="margin-top:15px; display:flex; gap:10px;">
-                <button type="submit" name="add_nopol" class="btn btn-primary" style="flex:1;">Simpan Nopol</button>
-                <button type="button" onclick="document.getElementById('modal-nopol').style.display='none'" class="btn btn-secondary" style="flex:1;">Batal</button>
-            </div>
-        </form>
+        <div class="modal-header">
+            <h4>🚛 Tambah Nomor Polisi Baru</h4>
+        </div>
+        <div class="modal-body">
+            <form method="POST" action="">
+                <div class="form-group">
+                    <label>Nomor Polisi (Nopol)</label>
+                    <input type="text" name="nopol" class="form-control" placeholder="Contoh: H 1234 AB" required>
+                </div>
+                <div class="modal-footer" style="padding-top: 10px; margin-top: 10px;">
+                    <button type="submit" name="add_nopol" class="btn-modal-submit">Simpan Nopol</button>
+                    <a href="javascript:void(0)" onclick="document.getElementById('modal-nopol').style.display='none'" class="modal-close">Batal</a>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
