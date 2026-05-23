@@ -483,11 +483,34 @@ foreach ($jadwal_manifest as $m) {
               outline: none;
               box-shadow: 0 0 0 3px rgba(10, 77, 191, 0.15);
           }
-          .modal .btn {
-              margin-top: 8px;
-              margin-right: 8px;
-          }
+           .modal .btn {
+               margin-top: 8px;
+               margin-right: 8px;
+           }
 
+           /* Success Popup / Toast */
+           .success-popup {
+               position: fixed;
+               top: 50%;
+               left: 50%;
+               transform: translate(-50%, -50%);
+               background: #d4edda;
+               color: #155724;
+               padding: 22px 35px;
+               border-radius: 14px;
+               box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+               z-index: 9999;
+               text-align: center;
+               font-size: 17px;
+               font-weight: 700;
+               border: 3px solid #c3e6cb;
+               min-width: 280px;
+           }
+           .success-popup .check {
+               font-size: 28px;
+               display: block;
+               margin-bottom: 6px;
+           }
 
     </style>
 </head>
@@ -890,6 +913,20 @@ eventClick: function(info) {
             }
         });
 
+        // Helper: Show nice success popup (toast/modal style)
+        function showSuccessPopup(message) {
+            var popup = document.createElement('div');
+            popup.className = 'success-popup';
+            popup.innerHTML = '<span class="check">✅</span>' + message;
+            document.body.appendChild(popup);
+
+            setTimeout(function() {
+                if (popup && popup.parentNode) {
+                    popup.parentNode.removeChild(popup);
+                }
+            }, 1600);
+        }
+
         // AJAX: Add Event Form
         document.getElementById('add_event_form').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -904,15 +941,17 @@ eventClick: function(info) {
             }).then(function(r) { return r.json(); })
               .then(function(data) {
                   var msg = document.getElementById('add_form_message');
-                  if (data.success) {
-                      msg.innerHTML = '<span style="color:green;">' + (data.message || 'Berhasil') + '</span>';
-                      setTimeout(function() {
-                          document.getElementById('add_modal').style.display = 'none';
-                          location.reload();
-                      }, 800);
-                  } else {
-                      msg.innerHTML = '<span style="color:red;">' + (data.error || 'Gagal') + '</span>';
-                  }
+                   if (data.success) {
+                       // Tampilkan pop up yang diminta user
+                       document.getElementById('add_modal').style.display = 'none';
+                       showSuccessPopup('Jadwal berhasil diinputkan');
+
+                       setTimeout(function() {
+                           location.reload();
+                       }, 1400);
+                   } else {
+                       msg.innerHTML = '<span style="color:red;">' + (data.error || 'Gagal') + '</span>';
+                   }
                   btn.disabled = false;
                   btn.textContent = 'Simpan';
               })
