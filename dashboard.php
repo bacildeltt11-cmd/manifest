@@ -298,6 +298,30 @@ foreach ($jadwal_manifest as $m) {
                 flex: none;
                 min-height: auto;
             }
+            /* Batasi ukuran grafik agar tidak terlalu besar di smartphone */
+            .chart-container {
+                height: 200px !important;
+                max-height: 220px !important;
+            }
+            #calendar {
+                height: 380px !important;
+                max-height: 420px !important;
+            }
+            .card {
+                padding: 15px !important;
+            }
+        }
+
+        /* Tablet: batasi grafik & kalender agar tidak terlalu dominan */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .chart-container {
+                height: 260px !important;
+                max-height: 300px !important;
+            }
+            #calendar {
+                height: 450px !important;
+                max-height: 500px !important;
+            }
         }
          .card { 
              background: var(--white); 
