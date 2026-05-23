@@ -875,14 +875,14 @@ eventClick: function(info) {
                         <?php endif; ?>
                     },
                     dateClick: function(info) {
-                        <?php if($is_boss): ?>
-                            document.getElementById('add_tanggal').value = info.dateStr;
-                            var d = new Date(info.dateStr + 'T00:00:00');
-                            document.getElementById('add_tanggal_display').value = d.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
-                            document.getElementById('add_event_form').reset();
-                            document.getElementById('add_form_message').innerHTML = '';
-                            document.getElementById('add_modal').style.display = 'flex';
-                        <?php endif; ?>
+                         <?php if($is_boss): ?>
+                             document.getElementById('add_event_form').reset();
+                             document.getElementById('add_tanggal').value = info.dateStr;
+                             var d = new Date(info.dateStr + 'T00:00:00');
+                             document.getElementById('add_tanggal_display').value = d.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
+                             document.getElementById('add_form_message').innerHTML = '';
+                             document.getElementById('add_modal').style.display = 'flex';
+                         <?php endif; ?>
                     },
                     events: <?php echo json_encode($events ?: [], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>
                 });
