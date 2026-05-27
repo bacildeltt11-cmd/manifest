@@ -350,45 +350,42 @@ $h = $h_obj ? (array)$h_obj : [];
                 width: 100%;
             }
 
-            /* Row input: Nama Barang full width, then PCS/Ton/Volume/Button in one row */
+            /* Row input: keep horizontal, allow scroll if needed */
+            .form-scroll-wrapper {
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                margin-bottom: 15px;
+            }
             .row-input {
-                grid-template-columns: 1fr 1fr 1fr auto;
-                gap: 8px;
+                min-width: 600px;
+                grid-template-columns: 2fr 1fr 1fr 1fr auto;
+                gap: 10px;
                 padding: 12px;
                 align-items: end;
             }
-            /* Nama Barang spans all columns */
-            .row-input .field:first-child {
-                grid-column: 1 / -1;
-            }
-            /* Field labels smaller on mobile */
             .row-input .field label {
                 font-size: 12px;
                 margin-bottom: 3px;
+                white-space: nowrap;
             }
-            /* Inputs smaller on mobile */
             .row-input .field .form-control,
             .row-input .field #search-box {
                 padding: 8px;
                 font-size: 13px;
             }
-            /* Button group */
-            .row-input > div[style*="display: flex"] {
-                gap: 4px;
-                align-items: flex-end;
-            }
             .row-input > div[style*="display: flex"] .btn {
                 white-space: nowrap;
-                padding: 8px 12px;
+                padding: 8px 14px;
                 font-size: 13px;
             }
 
-            /* Table: horizontal scroll */
+            /* Table: full horizontal scroll, matches form width */
             .table-wrapper {
                 margin-bottom: 12px;
             }
             .table-custom {
-                min-width: 480px;
+                min-width: 600px;
                 font-size: 13px;
             }
             .table-custom th, .table-custom td {
@@ -452,6 +449,7 @@ $h = $h_obj ? (array)$h_obj : [];
                 </div>
                 <?php endif; ?>
 
+                <div class="form-scroll-wrapper">
                 <form method="POST" autocomplete="off">
                     <input type="hidden" name="csrf_token" value="<?= e($_SESSION['csrf_token']) ?>">
                     <?php if ($edit_data): ?>
@@ -479,6 +477,7 @@ $h = $h_obj ? (array)$h_obj : [];
                          </div>
                     </div>
                 </form>
+                </div>
 
                 <div class="table-wrapper">
                 <table class="table-custom">
