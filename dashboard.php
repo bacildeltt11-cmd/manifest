@@ -310,22 +310,19 @@ foreach ($jadwal_manifest as $m) {
             .right-panel .card {
                 flex: none;
                 min-height: auto;
-            }
-            /* Batasi ukuran grafik agar tidak terlalu besar di smartphone */
-            .chart-container {
-                height: 200px !important;
-                max-height: 220px !important;
-            }
-            #calendar {
-                height: 380px !important;
-                max-height: 420px !important;
-            }
-            .card {
-                height: auto; /* allow cards to size to content on mobile */
-                width: 100%;
                 padding: 15px !important;
             }
+            .left-panel .card:first-child .chart-container,
+            .left-panel .card:last-child .history-list,
+            .right-panel .card #calendar {
+                flex: none;
+                height: auto;
+                min-height: 0;
+            }
             .chart-container {
+                height: auto !important;
+                max-height: none !important;
+                min-height: 180px;
                 width: 100%;
                 overflow: hidden;
             }
@@ -334,17 +331,14 @@ foreach ($jadwal_manifest as $m) {
                 height: auto !important;
             }
             #calendar {
-                width: 100% !important;
+                height: auto !important;
+                max-height: none !important;
+                min-height: 300px;
+                width: 100%;
                 overflow: hidden;
             }
-            }
-
-            /* Rapikan riwayat di smartphone */
-            .left-panel {
-                gap: 12px !important;
-            }
             .history-list {
-                max-height: 180px;
+                max-height: 200px;
                 overflow-y: auto;
                 padding-right: 4px;
                 display: flex;
@@ -358,12 +352,8 @@ foreach ($jadwal_manifest as $m) {
                 display: flex;
                 flex-direction: column;
             }
-            .history-item-details strong {
-                font-size: 14px;
-            }
-            .history-item-details span {
-                font-size: 12px;
-            }
+            .history-item-details strong { font-size: 14px; }
+            .history-item-details span { font-size: 12px; }
             .history-item a {
                 font-size: 11px;
                 margin-top: 4px;
@@ -399,9 +389,23 @@ foreach ($jadwal_manifest as $m) {
              padding: 20px; 
              border-radius: 12px; 
              box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-             border-top: 4px solid var(--primary-blue);
-             height: 100%;
-         }
+              border-top: 4px solid var(--primary-blue);
+              height: auto;
+          }
+
+          @media (max-width: 768px) {
+              .card {
+                  height: auto !important;
+                  padding: 15px !important;
+              }
+              .chart-container, #calendar {
+                  min-height: 200px;
+                  height: auto;
+              }
+              .chart-container canvas {
+                  height: auto !important;
+              }
+          }
          .card h3 { 
              margin: 0 0 15px 0; 
              color: #555; 
