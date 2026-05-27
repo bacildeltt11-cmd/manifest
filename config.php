@@ -5,7 +5,7 @@
  */
 
 // Database configuration
-$mongodb_uri = getenv('MONGODB_URI') ?: 'mongodb+srv://sagitarifqy11_db_user:7AKKNkDPN1wjVj9C@cluster0.ctftqar.mongodb.net/';
+$mongodb_uri = getenv('MONGODB_URI') ?: 'mongodb+srv://bacildeltt11_db_user:MjZXWWtI5XLRhJci@cluster0.c50ple3.mongodb.net/';
 $database = getenv('MONGODB_DB') ?: 'cargo_manifest';
 
 // App configuration

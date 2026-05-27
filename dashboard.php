@@ -131,8 +131,20 @@ foreach ($jadwal_manifest as $m) {
     $m_arr = (array)$m;
     if (isset($m_arr['tanggal']) && isset($m_arr['jam'])) {
         $title = 'Manifest ' . $m_arr['kapal'] . ' - ' . $m_arr['nopol'];
-        $start = $m_arr['tanggal'] . 'T' . $m_arr['jam'] . ':00';
-        $end = date('Y-m-d\TH:i:s', strtotime($start) + 3600); // +1 hour
+        $tz = new DateTimeZone('Asia/Jakarta');
+        $dt = DateTime::createFromFormat('Y-m-d H:i', $m_arr['tanggal'] . ' ' . $m_arr['jam'], $tz);
+        if (!$dt) {
+            $dt = new DateTime($m_arr['tanggal'] . ' ' . $m_arr['jam'], $tz);
+        }
+        $start = $dt->format('c'); // ISO8601 with offset
+        $end_dt = clone $dt;
+        $end_dt->add(new DateInterval('PT1H'));
+        // Jika berakhir keesokan hari (mis. start 23:30 +1h -> 00:30), clamp ke 23:59:59 supaya tidak melebar ke kotak tanggal berikutnya
+        if ($end_dt->format('Y-m-d') !== $dt->format('Y-m-d')) {
+            $end_dt = clone $dt;
+            $end_dt->setTime(23, 59, 59);
+        }
+        $end = $end_dt->format('c');
         $id = (string)$m_arr['_id'];
         $url = ($_SESSION['login_rifqy'] !== 'Boss') ? 'input_muatan.php?id=' . $id : '';
         $muatan_count = count(findDocuments("muatan", ["id_manifest" => $id]));
@@ -523,7 +535,8 @@ foreach ($jadwal_manifest as $m) {
 
         <?php
         if(isset($_SESSION['success'])){
-            echo '<div class="alert alert-success">'.$_SESSION['success'].'</div>';
+            $successMsg = $_SESSION['success'];
+            echo '<script>window.__pendingSuccess = ' . json_encode($successMsg) . ';</script>';
             unset($_SESSION['success']);
         }
         if(isset($_SESSION['error'])){
@@ -533,7 +546,7 @@ foreach ($jadwal_manifest as $m) {
         ?>
 
         <div class="content-wrapper">
-            <h1>Halo, <?= e($nama_user) ?>! 👋</h1>
+            <h1><?php if($is_boss){ echo 'hallo boss'; } else { echo 'Halo, ' . e($nama_user) . '! 👋'; } ?></h1>
             <p class="subtitle">Selamat datang di Pusat Kontrol Sistem Manifest Cargo.</p>
 
             <div class="dashboard-grid">
@@ -840,7 +853,8 @@ eventClick: function(info) {
                             if (disp) {
                                 var tglVal = ext.tanggal || dateStr;
                                 if (tglVal) {
-                                    var dt = new Date(tglVal + 'T00:00:00');
+                                    var parts = tglVal.split('-');
+                                    var dt = new Date(parseInt(parts[0],10), parseInt(parts[1],10)-1, parseInt(parts[2],10));
                                     disp.value = dt.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
                                 }
                             }
@@ -900,11 +914,12 @@ eventClick: function(info) {
                     dateClick: function(info) {
                          <?php if($is_boss): ?>
                              document.getElementById('add_event_form').reset();
-                             document.getElementById('add_tanggal').value = info.dateStr;
-                             var d = new Date(info.dateStr + 'T00:00:00');
-                             document.getElementById('add_tanggal_display').value = d.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
-                             document.getElementById('add_form_message').innerHTML = '';
-                             document.getElementById('add_modal').style.display = 'flex';
+                              document.getElementById('add_tanggal').value = info.dateStr;
+                              var parts = info.dateStr.split('-');
+                              var d = new Date(parseInt(parts[0],10), parseInt(parts[1],10)-1, parseInt(parts[2],10));
+                              document.getElementById('add_tanggal_display').value = d.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
+                              document.getElementById('add_form_message').innerHTML = '';
+                              document.getElementById('add_modal').style.display = 'flex';
                          <?php endif; ?>
                     },
                     events: <?php echo json_encode($events ?: [], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>
@@ -924,7 +939,14 @@ eventClick: function(info) {
                 if (popup && popup.parentNode) {
                     popup.parentNode.removeChild(popup);
                 }
-            }, 1600);
+            }, 1800);
+        }
+
+        // Trigger popup if coming from manifest create or other success
+        if (window.__pendingSuccess) {
+            setTimeout(function() {
+                showSuccessPopup(window.__pendingSuccess);
+            }, 300);
         }
 
         // AJAX: Add Event Form
