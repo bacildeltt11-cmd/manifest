@@ -4,7 +4,6 @@ session_start([
     'cookie_httponly' => true,
     'use_strict_mode' => true
 ]);
-session_regenerate_id(true);
 
 include "koneksi_mongodb.php";
 include "functions.php";
