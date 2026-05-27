@@ -89,24 +89,35 @@ if (isset($_POST['simpan_database'])) {
         exit;
     }
 
-    $is_valid = findOneDocument("master_barang", ["nama" => $nama]);
-    if (!$is_valid) {
+    // Validate barang exists in master list and fetch current pcs
+    $master = findOneDocument("master_barang", ["nama" => $nama]);
+    if (!$master) {
         $_SESSION['error'] = "MAAF! Barang [ $nama ] tidak terdaftar. Silakan pilih dari daftar yang ada atau daftarkan barang baru di kotak oranye di bawah.";
         header("Location: input_muatan.php");
         exit;
     }
 
-    if(!empty($nama)){
-        insertDocument("muatan", [
-            "id_manifest" => $id_manifest,
-            "nama_barang" => $nama,
-            "pcs" => $pcs,
-            "ton" => $ton,
-            "volume" => $vol
-        ]);
+    // Check available pcs in storage
+    $available_pcs = $master['pcs'] ?? 0;
+    if ($pcs > $available_pcs) {
+        $_SESSION['error'] = "Jumlah PCS yang dimasukkan ($pcs) melebihi stok tersedia ($available_pcs).";
+        header("Location: input_muatan.php");
+        exit;
     }
-    header("Location: input_muatan.php");
-    exit;
+
+    // Insert muatan record
+    insertDocument("muatan", [
+        "id_manifest" => $id_manifest,
+        "nama_barang" => $nama,
+        "pcs" => $pcs,
+        "ton" => $ton,
+        "volume" => $vol
+    ]);
+
+    // Reduce pcs in master_barang storage
+    updateDocument("master_barang", ["nama" => $nama], [
+        '$set' => ["pcs" => $available_pcs - $pcs]
+    ]);
 }
 
 // 2.5 MESIN UPDATE BARANG
@@ -142,24 +153,43 @@ if (isset($_POST['update_database'])) {
         exit;
     }
 
-    $is_valid = findOneDocument("master_barang", ["nama" => $nama]);
-    if (!$is_valid) {
-        $_SESSION['error'] = "MAAF! Update gagal. Nama barang [ $nama ] tidak valid.";
+    // Validate barang exists in master list and fetch current pcs
+    $master = findOneDocument("master_barang", ["nama" => $nama]);
+    if (!$master) {
+        $_SESSION['error'] = "MAAF! Update gagal. Nama barang [ $nama ] tidak terdaftar.";
         header("Location: input_muatan.php");
         exit;
     }
 
-    if(!empty($nama)){
-        updateDocument("muatan",
-            ['_id' => new MongoDB\BSON\ObjectId($id_edit)],
-            ['$set' => [
-                "nama_barang" => $nama,
-                "pcs" => $pcs,
-                "ton" => $ton,
-                "volume" => $vol
-            ]]
-        );
+    // Fetch existing muatan record to get previous pcs
+    $oldMuatan = findOneDocument("muatan", ['_id' => new MongoDB\BSON\ObjectId($id_edit)]);
+    $oldPcs = $oldMuatan ? ($oldMuatan->pcs ?? 0) : 0;
+
+    // Calculate stock after reverting old pcs and applying new pcs
+    $available_pcs = ($master['pcs'] ?? 0) + $oldPcs; // add back old pcs
+    if ($pcs > $available_pcs) {
+        $_SESSION['error'] = "Jumlah PCS yang dimasukkan ($pcs) melebihi stok tersedia ($available_pcs).";
+        header("Location: input_muatan.php");
+        exit;
     }
+
+    // Update muatan record
+    updateDocument("muatan",
+        ['_id' => new MongoDB\BSON\ObjectId($id_edit)],
+        ['$set' => [
+            "nama_barang" => $nama,
+            "pcs" => $pcs,
+            "ton" => $ton,
+            "volume" => $vol
+        ]]
+    );
+
+    // Adjust master_barang pcs (subtract new pcs, add back old pcs difference)
+    $new_stock = $available_pcs - $pcs; // resulting stock after update
+    updateDocument("master_barang", ["nama" => $nama], [
+        '$set' => ["pcs" => $new_stock]
+    ]);
+
     header("Location: input_muatan.php");
     exit;
 }
