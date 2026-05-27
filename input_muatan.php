@@ -350,19 +350,21 @@ $h = $h_obj ? (array)$h_obj : [];
                 width: 100%;
             }
 
-            /* Row input: keep horizontal, allow scroll if needed */
+            /* Row input: Nama barang full width, 4 items on next row */
             .form-scroll-wrapper {
                 width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
                 margin-bottom: 15px;
             }
             .row-input {
                 min-width: 0;
-                grid-template-columns: 3fr 60px 60px 60px auto;
+                grid-template-columns: 1fr 1fr 1fr auto;
                 gap: 8px;
                 padding: 12px;
                 align-items: end;
+            }
+            /* Nama Barang spans all columns */
+            .row-input .field:first-child {
+                grid-column: 1 / -1;
             }
             .row-input .field label {
                 font-size: 11px;
@@ -374,26 +376,32 @@ $h = $h_obj ? (array)$h_obj : [];
                 padding: 6px;
                 font-size: 12px;
                 min-width: 0;
+                width: 100%;
+            }
+            .row-input > div[style*="display: flex"] {
+                flex-direction: row;
+                gap: 4px;
             }
             .row-input > div[style*="display: flex"] .btn {
                 white-space: nowrap;
                 padding: 6px 10px;
                 font-size: 12px;
+                height: 100%;
             }
 
-            /* Table: full width card */
+            /* Table: full width card with scroll */
             .table-wrapper {
                 margin-bottom: 12px;
                 overflow-x: auto;
+                width: 100%;
             }
             .table-custom {
                 width: 100%;
-                min-width: 0;
+                min-width: 550px; /* Ensure it stretches right and scrolls if screen is small */
                 font-size: 12px;
-                table-layout: auto;
             }
             .table-custom th, .table-custom td {
-                padding: 6px 5px;
+                padding: 8px 6px;
                 white-space: nowrap;
             }
 
