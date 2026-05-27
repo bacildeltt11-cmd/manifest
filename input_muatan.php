@@ -355,7 +355,7 @@ $h = $h_obj ? (array)$h_obj : [];
                 </table>
 
                 <div class="nav-actions">
-                    <a href="input_keberangkatan.php" style="color:var(--gray); text-decoration:none; font-weight: bold;">← Kembali</a>
+                    <a href="dashboard.php" style="color:var(--gray); text-decoration:none; font-weight: bold;">← Kembali</a>
                     <a href="preview_manifest.php?id=<?= e($id_manifest) ?>" class="btn btn-primary" <?= $is_locked ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : '' ?>>Lihat Manifest (Cetak) →</a>
                 </div>
             </div>
