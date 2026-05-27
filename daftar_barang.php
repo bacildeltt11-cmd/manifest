@@ -157,12 +157,18 @@ if (empty($barang_list)) {
             <?php endif; ?>
 
             <div class="container-barang">
-                <h4 style="margin-bottom: 16px; color: #0a4dbf;">Daftar Barang yang Tersedia (<?= count($barang_list) ?>)</h4>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 15px;">
+                    <h4 style="margin: 0; color: #0a4dbf;">Daftar Barang yang Tersedia (<?= count($barang_list) ?>)</h4>
+                    <div style="position: relative; max-width: 320px; width: 100%;">
+                        <input type="text" id="search-barang" class="form-control" placeholder="Cari nama barang..." style="padding-left: 35px; width: 100%; box-sizing: border-box; border-radius: 20px;">
+                        <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #888; font-size: 14px;">🔍</span>
+                    </div>
+                </div>
 
                 <?php if (!empty($barang_list)): ?>
-                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    <div id="barang-list-container" style="display: flex; flex-wrap: wrap; gap: 10px;">
                         <?php foreach ($barang_list as $barang): ?>
-                            <span class="barang-tag">
+                            <span class="barang-tag" data-name="<?= htmlspecialchars(strtolower($barang)) ?>">
                                 <?= e($barang) ?>
                                 <?php if ($is_admin): ?>
                                     <a href="?hapus=<?= urlencode($barang) ?>" class="del" onclick="return confirm('Hapus \"<?= e($barang) ?>\" dari daftar?')">×</a>
@@ -200,6 +206,42 @@ function showSuccessPopup(message) {
         }
     }, 2000);
 }
+
+// Script untuk Search Barang
+document.getElementById('search-barang')?.addEventListener('input', function(e) {
+    const searchTerm = e.target.value.toLowerCase();
+    const tags = document.querySelectorAll('#barang-list-container .barang-tag');
+    let hasVisible = false;
+
+    tags.forEach(tag => {
+        const name = tag.getAttribute('data-name');
+        if (name.includes(searchTerm)) {
+            tag.style.display = 'inline-flex';
+            hasVisible = true;
+        } else {
+            tag.style.display = 'none';
+        }
+    });
+
+    let emptyMsg = document.getElementById('empty-search-msg');
+    if (!hasVisible && searchTerm !== '') {
+        if (!emptyMsg) {
+            emptyMsg = document.createElement('p');
+            emptyMsg.id = 'empty-search-msg';
+            emptyMsg.style.color = '#888';
+            emptyMsg.style.width = '100%';
+            emptyMsg.style.textAlign = 'center';
+            emptyMsg.style.marginTop = '20px';
+            emptyMsg.textContent = 'Barang "' + e.target.value + '" tidak ditemukan.';
+            document.getElementById('barang-list-container').appendChild(emptyMsg);
+        } else {
+            emptyMsg.textContent = 'Barang "' + e.target.value + '" tidak ditemukan.';
+            emptyMsg.style.display = 'block';
+        }
+    } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+    }
+});
 
 // Tampilkan popup jika ada pesan sukses dari penambahan daftar barang
 if (window.__barangSuccess) {
