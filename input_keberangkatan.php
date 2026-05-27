@@ -362,37 +362,7 @@ $button_label = $edit_id ? "Simpan Perubahan" : ($is_boss ? "Simpan Jadwal" : "S
                 </div>
             </div>
 
-            <?php if ($is_boss): ?>
-            <!-- DAFTAR BARANG MONITORING - DIBAWAH DATA KEBERANGKATAN -->
-            <div style="margin-top: 35px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px 24px;">
-                <h4 style="margin: 0 0 14px 0; color: #0a4dbf; font-size: 15px;">📦 Daftar Barang (Monitoring Saja)</h4>
-                <div id="daftar-barang-monitor" style="display: flex; flex-wrap: wrap; gap: 8px; min-height: 32px;"></div>
-                <small style="display: block; margin-top: 12px; color: #666; font-size: 12.5px;">Hanya untuk memantau. Penambahan barang baru hanya oleh Admin melalui menu <strong>Daftar Barang</strong> di sidebar.</small>
-            </div>
-            <script>
-            (function() {
-                fetch('api_master_barang.php?action=get')
-                    .then(r => r.json())
-                    .then(function(list) {
-                        const el = document.getElementById('daftar-barang-monitor');
-                        if (!el || !list || !list.length) {
-                            if (el) el.innerHTML = '<span style="color:#888; font-size:13px;">Belum ada daftar barang.</span>';
-                            return;
-                        }
-                        list.forEach(function(n) {
-                            const tag = document.createElement('span');
-                            tag.style.cssText = 'background:#e3f0ff; color:#0a4dbf; padding:5px 12px; border-radius:999px; font-size:13px; font-weight:600;';
-                            tag.textContent = n;
-                            el.appendChild(tag);
-                        });
-                    })
-                    .catch(function() {
-                        const el = document.getElementById('daftar-barang-monitor');
-                        if (el) el.innerHTML = '<span style="color:#999; font-size:12px;">Gagal memuat daftar.</span>';
-                    });
-            })();
-            </script>
-            <?php endif; ?>
+
 
         </div>
     </div>
