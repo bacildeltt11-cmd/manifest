@@ -358,38 +358,43 @@ $h = $h_obj ? (array)$h_obj : [];
                 margin-bottom: 15px;
             }
             .row-input {
-                min-width: 600px;
-                grid-template-columns: 2fr 1fr 1fr 1fr auto;
-                gap: 10px;
+                min-width: 0;
+                grid-template-columns: 3fr 60px 60px 60px auto;
+                gap: 8px;
                 padding: 12px;
                 align-items: end;
             }
             .row-input .field label {
-                font-size: 12px;
+                font-size: 11px;
                 margin-bottom: 3px;
                 white-space: nowrap;
             }
             .row-input .field .form-control,
             .row-input .field #search-box {
-                padding: 8px;
-                font-size: 13px;
+                padding: 6px;
+                font-size: 12px;
+                min-width: 0;
             }
             .row-input > div[style*="display: flex"] .btn {
                 white-space: nowrap;
-                padding: 8px 14px;
-                font-size: 13px;
+                padding: 6px 10px;
+                font-size: 12px;
             }
 
-            /* Table: full horizontal scroll, matches form width */
+            /* Table: full width card */
             .table-wrapper {
                 margin-bottom: 12px;
+                overflow-x: auto;
             }
             .table-custom {
-                min-width: 600px;
-                font-size: 13px;
+                width: 100%;
+                min-width: 0;
+                font-size: 12px;
+                table-layout: auto;
             }
             .table-custom th, .table-custom td {
-                padding: 8px 6px;
+                padding: 6px 5px;
+                white-space: nowrap;
             }
 
             /* Nav actions: stack vertically */
