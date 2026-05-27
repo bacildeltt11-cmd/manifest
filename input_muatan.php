@@ -357,52 +357,54 @@ $h = $h_obj ? (array)$h_obj : [];
             }
             .row-input {
                 min-width: 0;
-                grid-template-columns: 1fr 1fr 1fr auto;
-                gap: 8px;
-                padding: 12px;
+                grid-template-columns: 1fr 1fr 1fr auto !important; /* Override style.css */
+                gap: 8px !important;
+                padding: 12px !important;
                 align-items: end;
             }
             /* Nama Barang spans all columns */
             .row-input .field:first-child {
-                grid-column: 1 / -1;
+                grid-column: 1 / -1 !important;
             }
             .row-input .field label {
-                font-size: 11px;
-                margin-bottom: 3px;
-                white-space: nowrap;
+                font-size: 11px !important;
+                margin-bottom: 3px !important;
+                white-space: nowrap !important;
             }
             .row-input .field .form-control,
             .row-input .field #search-box {
-                padding: 6px;
-                font-size: 12px;
-                min-width: 0;
-                width: 100%;
+                padding: 6px !important;
+                font-size: 12px !important;
+                min-width: 0 !important;
+                width: 100% !important;
             }
             .row-input > div[style*="display: flex"] {
-                flex-direction: row;
-                gap: 4px;
+                flex-direction: row !important;
+                gap: 4px !important;
             }
             .row-input > div[style*="display: flex"] .btn {
-                white-space: nowrap;
-                padding: 6px 10px;
-                font-size: 12px;
-                height: 100%;
+                white-space: nowrap !important;
+                padding: 6px 10px !important;
+                font-size: 12px !important;
+                height: 100% !important;
             }
 
             /* Table: full width card with scroll */
             .table-wrapper {
                 margin-bottom: 12px;
-                overflow-x: auto;
-                width: 100%;
+                overflow-x: auto !important;
+                width: 100% !important;
+                -webkit-overflow-scrolling: touch;
             }
             .table-custom {
-                width: 100%;
-                min-width: 550px; /* Ensure it stretches right and scrolls if screen is small */
-                font-size: 12px;
+                display: table !important; /* Override display: block from style.css */
+                width: 100% !important;
+                min-width: 550px !important; 
+                font-size: 12px !important;
             }
             .table-custom th, .table-custom td {
-                padding: 8px 6px;
-                white-space: nowrap;
+                padding: 8px 6px !important;
+                white-space: nowrap !important;
             }
 
             /* Nav actions: stack vertically */
