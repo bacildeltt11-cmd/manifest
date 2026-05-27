@@ -322,8 +322,21 @@ foreach ($jadwal_manifest as $m) {
             }
             .card {
                 height: auto; /* allow cards to size to content on mobile */
-            }
+                width: 100%;
                 padding: 15px !important;
+            }
+            .chart-container {
+                width: 100%;
+                overflow: hidden;
+            }
+            .chart-container canvas {
+                width: 100% !important;
+                height: auto !important;
+            }
+            #calendar {
+                width: 100% !important;
+                overflow: hidden;
+            }
             }
 
             /* Rapikan riwayat di smartphone */
@@ -331,21 +344,25 @@ foreach ($jadwal_manifest as $m) {
                 gap: 12px !important;
             }
             .history-list {
-                max-height: 160px;
+                max-height: 180px;
                 overflow-y: auto;
                 padding-right: 4px;
+                display: flex;
+                flex-direction: column;
             }
             .history-item {
-                padding: 8px 10px;
-                margin-bottom: 6px;
-                font-size: 13px;
+                padding: 10px 12px;
+                margin-bottom: 8px;
+                font-size: 14px;
                 flex-wrap: wrap;
+                display: flex;
+                flex-direction: column;
             }
             .history-item-details strong {
-                font-size: 13px;
+                font-size: 14px;
             }
             .history-item-details span {
-                font-size: 11px;
+                font-size: 12px;
             }
             .history-item a {
                 font-size: 11px;
