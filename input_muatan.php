@@ -254,9 +254,10 @@ $h = $h_obj ? (array)$h_obj : [];
     <link rel="stylesheet" href="style.css">
     <style>
         .header-info { background: var(--light-blue); border-left: 5px solid var(--primary-blue); padding: 18px; border-radius: 8px; margin-bottom: 25px; }
+        .header-info-inner { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
         .header-row { display: grid; grid-template-columns: 140px 10px auto; gap: 5px; line-height: 1.6; font-size: 14px; }
         .header-row span:first-child { font-weight: 600; color: var(--text-color); }
-        .master-box { margin-bottom: 25px; padding: 20px; background: #fff8e1; border-radius: 10px; border-left: 5px solid #ff9800; display: flex; gap: 15px; align-items: center; }
+        .master-box { margin-bottom: 25px; padding: 20px; background: #fff8e1; border-radius: 10px; border-left: 5px solid #ff9800; display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
         .master-box strong { font-size: 16px; color: #e65100; }
         .master-box input { padding: 12px; font-size: 16px; border-radius: 8px; border: 2px solid #ddd; width: 300px; }
         .master-box button { padding: 12px 20px; font-size: 16px; border-radius: 8px; }
@@ -268,6 +269,8 @@ $h = $h_obj ? (array)$h_obj : [];
             border: 2px solid var(--border-color);
             padding: 12px;
             font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
         .form-control:focus, #search-box:focus {
@@ -278,15 +281,15 @@ $h = $h_obj ? (array)$h_obj : [];
         .dropdown-list { position: absolute; top: 100%; left: 0; right: 0; background: var(--white); border: 1px solid var(--border-color); max-height: 200px; overflow-y: auto; z-index: 1000; display: none; border-radius: 0 0 8px 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .dropdown-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid #eee; cursor: pointer; font-size: 14px; }
         .dropdown-item:hover { background: var(--light-blue); }
-        .dropdown-item:hover { background: var(--light-blue); }
         .btn-del-list { color: var(--danger); font-weight: bold; border: 1px solid var(--danger); padding: 0 6px; border-radius: 4px; font-size: 11px; }
-        .nav-actions { margin-top: 35px; display: flex; justify-content: space-between; align-items: center; }
+        .nav-actions { margin-top: 35px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
         .table-custom th:nth-child(1) { width: 10%; }
         .table-custom th:nth-child(2) { width: 25%; }
         .table-custom th:nth-child(3) { width: 15%; }
         .table-custom th:nth-child(4) { width: 15%; }
         .table-custom th:nth-child(5) { width: 15%; }
         .table-custom th:nth-child(6) { width: 20%; }
+        .table-wrapper { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; }
 
         .lock-notice {
             background: rgba(229, 57, 53, 0.1);
@@ -303,6 +306,93 @@ $h = $h_obj ? (array)$h_obj : [];
             font-weight: 600;
         }
         .lock-notice .lock-emoji { font-size: 22px; }
+
+        /* ============================
+           RESPONSIVE PORTRAIT MOBILE
+        ============================ */
+        @media (max-width: 768px) {
+            /* Reduce page padding */
+            div[style*="padding: 40px"] {
+                padding: 12px !important;
+            }
+
+            /* Header info: stack info + button vertically */
+            .header-info-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-info-inner > div {
+                width: 100%;
+            }
+            .header-info-inner > div a {
+                display: block;
+                width: 100%;
+                text-align: center;
+                margin-top: 8px;
+            }
+            .header-row {
+                grid-template-columns: 110px 10px auto;
+                font-size: 13px;
+            }
+
+            /* Master box: stack vertically */
+            .master-box {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 15px;
+            }
+            .master-box input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .master-box button {
+                width: 100%;
+            }
+
+            /* Row input: single column stacked form */
+            .row-input {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                padding: 14px;
+            }
+            .row-input > div[style*="display: flex"] {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .row-input > div[style*="display: flex"] .btn {
+                width: 100%;
+            }
+
+            /* Table: horizontal scroll */
+            .table-wrapper {
+                margin-bottom: 12px;
+            }
+            .table-custom {
+                min-width: 480px;
+                font-size: 13px;
+            }
+            .table-custom th, .table-custom td {
+                padding: 8px 6px;
+            }
+
+            /* Nav actions: stack vertically */
+            .nav-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-actions a {
+                width: 100%;
+                text-align: center;
+                display: block;
+            }
+
+            /* Lock notice */
+            .lock-notice {
+                font-size: 13px;
+                padding: 10px 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -314,17 +404,19 @@ $h = $h_obj ? (array)$h_obj : [];
         <div style="padding: 40px;">
             <div class="container">
 
-                <div class="header-info" style="display: flex; justify-content: space-between; align-items: center;">
-                    <div class="header-row">
-                        <span>Nama Kapal</span><span>:</span><span><?= e($h['kapal'] ?? '') ?></span>
-                        <span>Tanggal</span><span>:</span><span><?= e($h['tanggal'] ?? '') ?></span>
-                        <span>Tujuan</span><span>:</span><span><?= e($h['tujuan'] ?? '') ?></span>
-                        <span>Jenis</span><span>:</span><span><?= e($h['jenis'] ?? '') ?></span>
-                        <span>Nopol</span><span>:</span><span><?= e($h['nopol'] ?? '') ?></span>
-                        <span>Jam</span><span>:</span><span><?= e($h['jam'] ?? '') ?> WIB</span>
-                    </div>
-                    <div>
-                        <a href="input_keberangkatan.php?id=<?= e($id_manifest) ?>" class="btn btn-sm btn-secondary" style="background: var(--primary-blue); color: white;">✏️ Edit Keberangkatan</a>
+                <div class="header-info">
+                    <div class="header-info-inner">
+                        <div class="header-row">
+                            <span>Nama Kapal</span><span>:</span><span><?= e($h['kapal'] ?? '') ?></span>
+                            <span>Tanggal</span><span>:</span><span><?= e($h['tanggal'] ?? '') ?></span>
+                            <span>Tujuan</span><span>:</span><span><?= e($h['tujuan'] ?? '') ?></span>
+                            <span>Jenis</span><span>:</span><span><?= e($h['jenis'] ?? '') ?></span>
+                            <span>Nopol</span><span>:</span><span><?= e($h['nopol'] ?? '') ?></span>
+                            <span>Jam</span><span>:</span><span><?= e($h['jam'] ?? '') ?> WIB</span>
+                        </div>
+                        <div>
+                            <a href="input_keberangkatan.php?id=<?= e($id_manifest) ?>" class="btn btn-sm btn-secondary" style="background: var(--primary-blue); color: white;">✏️ Edit Keberangkatan</a>
+                        </div>
                     </div>
                 </div>
 
@@ -369,6 +461,7 @@ $h = $h_obj ? (array)$h_obj : [];
                     </div>
                 </form>
 
+                <div class="table-wrapper">
                 <table class="table-custom">
                     <thead><tr><th>NO</th><th>NAMA BARANG</th><th>PCS</th><th>TON</th><th>VOLUME</th><th>AKSI</th></tr></thead>
                     <tbody>
@@ -382,7 +475,7 @@ $h = $h_obj ? (array)$h_obj : [];
                             $vol_tampil = isset($m['volume']) ? $m['volume'] : '';
                             $edit_link = $is_locked ? '#' : "?edit=" . e($id_muatan);
                             $hapus_link = $is_locked ? '#' : "?hapus=" . e($id_muatan) . "&token=" . e($_SESSION['csrf_token']);
-                            echo "<tr><td>$no</td><td style='text-align:left; padding-left:15px;'>" . e($m['nama_barang']) . "</td><td>" . e($m['pcs']) . "</td><td>" . e($m['ton']) . "</td><td>$vol_tampil</td><td><a href='$edit_link' style='color:" . ($is_locked ? '#999' : 'orange') . "; text-decoration:none; font-weight:bold; margin-right: 10px; " . ($is_locked ? 'cursor:not-allowed;' : '') . "'>Edit</a> <a href='$hapus_link' style='color:" . ($is_locked ? '#999' : 'red') . "; text-decoration:none; font-weight:bold; " . ($is_locked ? 'cursor:not-allowed;' : '') . "'" . ($is_locked ? "" : " onclick='return confirm(\"Hapus item ini?\")'") . ">Hapus</a></td></tr>";
+                            echo "<tr><td>$no</td><td style='text-align:left; padding-left:15px;'>" . e($m['nama_barang']) . "</td><td>" . e($m['pcs']) . "</td><td>" . e($m['ton']) . "</td><td>$vol_tampil</td><td><a href='$edit_link' style='color:" . ($is_locked ? '#999' : 'orange') . "; text-decoration:none; font-weight:bold; margin-right: 10px; " . ($is_locked ? 'cursor:not-allowed;' : '') . "'>Edit</a> <a href='$hapus_link' style='color:" . ($is_locked ? '#999' : 'red') . "; text-decoration:none; font-weight:bold; " . ($is_locked ? 'cursor:not-allowed;' : '') . "'" . ($is_locked ? "" : " onclick='return confirm(\"Hapus item ini?\")'" ) . ">Hapus</a></td></tr>";
                             $no++;
                         }
                         ?>
@@ -402,6 +495,7 @@ $h = $h_obj ? (array)$h_obj : [];
                         </tr>
                     </tfoot>
                 </table>
+                </div>
 
                 <div class="nav-actions">
                     <a href="dashboard.php" style="color:var(--gray); text-decoration:none; font-weight: bold;">← Kembali</a>
