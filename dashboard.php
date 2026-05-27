@@ -321,6 +321,8 @@ foreach ($jadwal_manifest as $m) {
                 max-height: 420px !important;
             }
             .card {
+                height: auto; /* allow cards to size to content on mobile */
+            }
                 padding: 15px !important;
             }
 
