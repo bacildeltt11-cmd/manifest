@@ -90,13 +90,15 @@ if (isset($_POST['simpan_database'])) {
     }
 
     // Validate barang exists in master list and fetch current pcs
-    $master = findOneDocument("master_barang", ["nama" => $nama]);
-    if (!$master) {
+    // Validate barang exists in master list and fetch current pcs
+    $masterObj = findOneDocument("master_barang", ["nama" => $nama]);
+    if (!$masterObj) {
         $_SESSION['error'] = "MAAF! Barang [ $nama ] tidak terdaftar. Silakan pilih dari daftar yang ada atau daftarkan barang baru di kotak oranye di bawah.";
         header("Location: input_muatan.php");
         exit;
     }
-
+    // Cast to array to access pcs
+    $master = (array)$masterObj;
     // Check available pcs in storage
     $available_pcs = $master['pcs'] ?? 0;
     if ($pcs > $available_pcs) {
@@ -154,12 +156,14 @@ if (isset($_POST['update_database'])) {
     }
 
     // Validate barang exists in master list and fetch current pcs
-    $master = findOneDocument("master_barang", ["nama" => $nama]);
-    if (!$master) {
+    $masterObj = findOneDocument("master_barang", ["nama" => $nama]);
+    if (!$masterObj) {
         $_SESSION['error'] = "MAAF! Update gagal. Nama barang [ $nama ] tidak terdaftar.";
         header("Location: input_muatan.php");
         exit;
     }
+    // Cast to array to access pcs
+    $master = (array)$masterObj;
 
     // Fetch existing muatan record to get previous pcs
     $oldMuatan = findOneDocument("muatan", ['_id' => new MongoDB\BSON\ObjectId($id_edit)]);
@@ -208,6 +212,21 @@ if (isset($_GET['hapus'])) {
     }
 
     $id_hapus = $_GET['hapus'];
+    // Retrieve the muatan record to restore stock
+    $muatanObj = findOneDocument("muatan", ['_id' => new MongoDB\BSON\ObjectId($id_hapus)]);
+    if ($muatanObj) {
+        $muatan = (array)$muatanObj;
+        $nama = $muatan['nama_barang'] ?? '';
+        $pcs  = $muatan['pcs'] ?? 0;
+        // Update master stock by adding back the pcs
+        $masterObj = findOneDocument("master_barang", ['nama' => $nama]);
+        if ($masterObj) {
+            $master = (array)$masterObj;
+            $new_stock = ($master['pcs'] ?? 0) + $pcs;
+            updateDocument("master_barang", ['nama' => $nama], ['$set' => ['pcs' => $new_stock]]);
+        }
+    }
+    // Delete the muatan entry
     deleteDocument("muatan", ['_id' => new MongoDB\BSON\ObjectId($id_hapus)]);
     header("Location: input_muatan.php");
     exit;
