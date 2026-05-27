@@ -350,33 +350,37 @@ $h = $h_obj ? (array)$h_obj : [];
                 width: 100%;
             }
 
-            /* Row input: 2-col grid, fields on left, button on right */
+            /* Row input: Nama Barang full width, then PCS/Ton/Volume/Button in one row */
             .row-input {
-                grid-template-columns: 1fr auto;
-                gap: 10px;
-                padding: 14px;
+                grid-template-columns: 1fr 1fr 1fr auto;
+                gap: 8px;
+                padding: 12px;
                 align-items: end;
             }
-            /* Nama Barang spans both columns */
+            /* Nama Barang spans all columns */
             .row-input .field:first-child {
                 grid-column: 1 / -1;
             }
-            /* PCS, Ton, Volume each take full left column */
-            .row-input .field:not(:first-child) {
-                grid-column: 1;
+            /* Field labels smaller on mobile */
+            .row-input .field label {
+                font-size: 12px;
+                margin-bottom: 3px;
             }
-            /* Button group stays right, spans its own column on all rows */
+            /* Inputs smaller on mobile */
+            .row-input .field .form-control,
+            .row-input .field #search-box {
+                padding: 8px;
+                font-size: 13px;
+            }
+            /* Button group */
             .row-input > div[style*="display: flex"] {
-                grid-column: 2;
-                grid-row: 2 / span 3;
-                flex-direction: column;
-                justify-content: flex-end;
-                gap: 8px;
-                min-width: 90px;
+                gap: 4px;
+                align-items: flex-end;
             }
             .row-input > div[style*="display: flex"] .btn {
-                width: 100%;
                 white-space: nowrap;
+                padding: 8px 12px;
+                font-size: 13px;
             }
 
             /* Table: horizontal scroll */
