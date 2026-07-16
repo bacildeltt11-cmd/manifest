@@ -117,8 +117,14 @@ th,td{border:1px solid #000;padding:10px;text-align:center;}
 .btn-print:hover { background: var(--light-blue); }
 .btn-back { background: #666; color: #fff; }
 .btn-back:hover { background: #444; }
-.btn-next { background: var(--primary-blue); color: #fff; }
-.btn-next:hover { opacity: 0.9; transform: translateY(-2px); }
+.btn-next { 
+    background: linear-gradient(135deg, #4caf50, #2e7d32); 
+    color: #fff; 
+}
+.btn-next:hover { 
+    opacity: 0.9; 
+    transform: translateY(-2px); 
+}
 
 @media print{
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
@@ -191,7 +197,11 @@ th,td{border:1px solid #000;padding:10px;text-align:center;}
 <tfoot>
 <tr class="total-row">
     <td colspan="3">TOTAL</td>
-    <td>± <?= $total_ton ?> Ton</td>
+    <td>± <?php 
+        // LOGIKA PERBAIKAN: Menggunakan total_ton_manual jika ada dan tidak kosong/nol
+        $total_ton_display = (isset($h['total_ton_manual']) && $h['total_ton_manual'] != '0' && $h['total_ton_manual'] != '') ? $h['total_ton_manual'] : $total_ton;
+        echo $total_ton_display; 
+    ?> Ton</td>
     <td></td>
 </tr>
 </tfoot>
@@ -210,7 +220,7 @@ th,td{border:1px solid #000;padding:10px;text-align:center;}
     <div style="display: flex; gap: 10px;">
         <button class="btn-print" onclick="window.print()">🖨️ Cetak (Browser)</button>
         <a href="cetak_pdf.php?id=<?= $id_manifest ?>" class="btn-print" style="text-decoration:none; display:inline-block; line-height:20px;">📄 Download PDF</a>
-        <a href="dashboard.php" class="btn-next" style="background: linear-gradient(135deg, #4caf50, #2e7d32);">Selesai ✓</a>
+        <a href="dashboard.php" class="btn-next">Selesai ✓</a>
     </div>
 </div>
 
